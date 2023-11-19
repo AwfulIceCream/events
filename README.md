@@ -17,7 +17,7 @@ Before you begin, make sure you have the following requirements:
 Clone the repository:
 
 ```bash
-https://github.com/AwfulIceCream/flask_hello_world.git
+git clone https://github.com/AwfulIceCream/flask_hello_world.git
 cd flask_hello_world
 ```
 
@@ -25,6 +25,9 @@ Create a virtual environment and install dependencies using Poetry:
 
 ```bash
 python -m venv venv
+#For windows:
+.\venv\Scripts\activate
+#For UNIX-like(Linux\MacOs):
 source venv/bin/activate
 pip install poetry
 poetry install
