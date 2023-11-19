@@ -1,10 +1,10 @@
 # Flask web application
 
-## Table of Contents
 <!-- TOC -->
-  * [Prerequisites](https://github.com/AwfulIceCream/flask_hello_world/blob/main/README.md#Prerequisites)
-  * [Setup](https://github.com/AwfulIceCream/flask_hello_world/blob/main/README.md#Setup)
-  * [How to Run](https://github.com/AwfulIceCream/flask_hello_world/blob/main/README.md#How-to-run)
+* [Flask web application](#flask-web-application)
+    * [Prerequisites](#prerequisites)
+    * [Setup](#setup)
+    * [How to Run](#how-to-run)
 <!-- TOC -->
 
 ### Prerequisites
@@ -20,15 +20,16 @@ Clone the repository:
 git clone https://github.com/AwfulIceCream/flask_hello_world.git
 cd flask_hello_world
 ```
-
-Create a virtual environment and install dependencies using Poetry:
-
+Activate virtual environment:
 ```bash
 python -m venv venv
 #For windows:
 .\venv\Scripts\activate
 #For UNIX-like(Linux\MacOs):
 source venv/bin/activate
+```
+Install Poetry and dependencies:
+```bash
 pip install poetry
 poetry install
 ```
