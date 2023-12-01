@@ -1,7 +1,7 @@
 from models.db import db
 
 
-class Event(db.Model):
+class EventModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64), index=True)
     description = db.Column(db.String(120), index=True)
