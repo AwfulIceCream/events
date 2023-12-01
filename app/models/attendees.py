@@ -1,4 +1,4 @@
-from models.db import db
+from .db import db
 
 attendees = db.Table('attendees',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
