@@ -17,8 +17,8 @@ Before you begin, make sure you have the following requirements:
 Clone the repository:
 
 ```bash
-git clone https://github.com/AwfulIceCream/theatre.git
-cd theatre
+git clone https://github.com/AwfulIceCream/flask_hello_world.git
+cd flask_hello_world
 ```
 Activate virtual environment:
 ```bash
