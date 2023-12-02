@@ -100,7 +100,7 @@ class EventAttendeesResource(MethodView):
     @jwt_required()
     @blp.response(200, UserGetSchema(many=True))
     def get(self, event_id):
-        event = EventModel.query.get_or_404(event_id)
+        event = EventModel.query.get(event_id)
         if not event:
             abort(404, message="Event not found.")
 
