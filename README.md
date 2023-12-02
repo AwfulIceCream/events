@@ -1,7 +1,7 @@
-# Flask web application
+# Flask event scheduler web application
 
 <!-- TOC -->
-* [Flask web application](#flask-web-application)
+* [Flask web application](#Flask-event-scheduler-web-application)
     * [Prerequisites](#prerequisites)
     * [Setup](#setup)
     * [How to Run](#how-to-run)
@@ -44,4 +44,4 @@ poetry run python app.py
 ```
 
 Note:
-If you encounter any issues or have specific questions about the Flask Hello World project, feel free to contact the author at <andriymyrosh@gmail.com>.
+If you encounter any issues or have specific questions about the Flask Events Scheduler project, feel free to contact the author at <andriymyrosh@gmail.com>.
