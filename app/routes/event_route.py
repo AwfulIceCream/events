@@ -14,6 +14,7 @@ blp = Blueprint('Events', __name__, url_prefix='/api/v1/events', description='Op
 
 @blp.route('')
 class EventsList(MethodView):
+    @jwt_required()
     @blp.response(200, EventSchema(many=True))
     def get(self):
         """

@@ -45,6 +45,10 @@ class UserGetSchema(Schema):
     email = fields.Str()
 
 
+class UserUpdateSchema(Schema):
+    name = fields.Str()
+
+
 class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     name = fields.Str()

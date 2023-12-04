@@ -1,9 +1,10 @@
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required
 
 from app.models import UserModel
-from app.schemas import UserGetSchema, EventSchema
+from app.schemas import UserGetSchema, EventSchema, UserUpdateSchema
+from ..models.db import db
 
 blp = Blueprint("User", __name__, url_prefix="/api/v1/users", description="User operations")
 
@@ -40,28 +41,28 @@ class UserEventsResource(MethodView):
 class UserEventsResource(MethodView):
     @jwt_required()
     @blp.response(200, UserGetSchema)
-    def get(self):
+    def get(self, user_id):
         """
         Get user by id
         """
-        user_id = get_jwt_identity()
-        event = UserModel.query.get_or_404(user_id)
-        if not event:
+        user = UserModel.query.get_or_404(user_id)
+        if not user:
             abort(404, message="User not found.")
         return UserGetSchema().dump(user)
 
     @jwt_required()
     @blp.response(200, UserGetSchema)
-    def put(self):
+    @blp.arguments(UserUpdateSchema)
+    def put(self, user_data, user_id):
         """
         Update user by id
         """
-        user_id = get_jwt_identity()
+        #user_id = get_jwt_identity()
         user = UserModel.query.get(user_id)
 
         if user:
             for key, value in user_data.items():
-                user[key] = value
+                setattr(user, key, value)
         else:
             user = UserModel(id=UserModel, **user_data)
             db.session.add(user)
@@ -70,14 +71,16 @@ class UserEventsResource(MethodView):
 
         return user
 
-    def delete(self):
+    def delete(self, user_id):
         """
         Delete user by id
         """
-        user_id = get_jwt_identity()
+        #user_id = get_jwt_identity()
         user = UserModel.query.get_or_404(user_id)
         if not user:
             abort(404, message="User not found.")
 
-        db.session.remove(user)
+        db.session.delete(user)
         db.session.commit()
+
+        return 204

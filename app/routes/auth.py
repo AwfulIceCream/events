@@ -3,7 +3,8 @@ from flask_smorest import Blueprint, abort
 from flask_jwt_extended import (
     jwt_required,
     create_access_token,
-    create_refresh_token
+    create_refresh_token,
+    get_jwt
 )
 from passlib.hash import pbkdf2_sha256
 
@@ -58,28 +59,27 @@ class UserLogin(MethodView):
         abort(401, message="Invalid credentials.")
 
 
-@blp.route("/logout")
+@blp.route("/logout", methods=["POST"])
 @jwt_required()
-class UserLogout(MethodView):
-    @jwt_required()
-    def post(self):
-        """
-        Logout
-        """
-        jti = get_jwt()["jti"]
-        BLOCKLIST.add(jti)
-        return {"message": "Successfully logged out"}, 200
+def post():
+    """
+    Logout
+    """
+    jti = get_jwt()["jti"]
+    BLOCKLIST.add(jti)
+    return {"message": "Successfully logged out"}, 200
 
 
 @blp.route("/refresh")
-@jwt_required()
-def post(user_id, jti):
-    """
-    Get refresh token
-    """
-    new_token = create_access_token(identity=user_id, fresh=False)
-    BLOCKLIST.add(jti)
-
-    return {
-        "access_token": new_token
-    }
+class TokenRefresh(MethodView):
+    @jwt_required(refresh=True)
+    def post(self):
+        """
+        Get refresh token
+        """
+        abort(409, massage=f"{get_jwt()}")
+        current_user = get_jwt_identity()
+        new_token = create_access_token(identity=current_user, fresh=False)
+        jti = get_jwt()["jti"]
+        BLOCKLIST.add(jti)
+        return {"access_token": new_token}, 200
