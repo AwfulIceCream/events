@@ -11,7 +11,7 @@ def test_register(client, init_database):
         "name": "Test User"
     }
 
-    response = client.post("/auth/register", json=new_user)
+    response = client.post("/api/v1/auth/register", json=new_user)
 
     assert response.status_code == 201
     assert response.get_json() == {"message": "User created successfully."}
@@ -28,7 +28,7 @@ def test_login(client, test_user):
     }
 
     # Act
-    response = client.post("/auth/login", json=login_credentials)
+    response = client.post("/api/v1/auth/login", json=login_credentials)
 
     # Assert
     assert response.status_code == 200

@@ -13,7 +13,7 @@ def test_user_list(client, init_database):
     }
 
     # Act
-    response = client.get("/users/", headers=headers)
+    response = client.get("/api/v1/users", headers=headers)
 
     # Assert
     assert response.status_code == 200
@@ -29,7 +29,7 @@ def test_user_events(client, test_user):
     }
 
     # Act
-    response = client.get(f"/users/{test_user.id}/events", headers=headers)
+    response = client.get(f"/api/v1/users/{test_user.id}/events", headers=headers)
 
     # Assert
     assert response.status_code == 200

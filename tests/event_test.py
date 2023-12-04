@@ -24,7 +24,7 @@ def test_event_resource(client, test_user, init_database):
     db.session.commit()
 
     # Act
-    response = client.get(f"/events/{new_event.id}", headers=headers)
+    response = client.get(f"/api/v1/events/{new_event.id}", headers=headers)
 
     # Assert
     assert response.status_code == 200
@@ -71,7 +71,8 @@ def test_attend_event_resource(client, test_user, init_database):
     new_event = EventModel(
         title="Event Title",
         description="Event Description",
-        date=datetime.strptime("2023-12-01T13:25:38", "%Y-%m-%dT%H:%M:%S")
+        date=datetime.strptime("2023-12-01T13:25:38", "%Y-%m-%dT%H:%M:%S"),
+        creator=test_user
     )
 
     db = init_database
@@ -79,7 +80,7 @@ def test_attend_event_resource(client, test_user, init_database):
     db.session.commit()
 
     # Act
-    response = client.post(f"/events/{new_event.id}/attend/{test_user.id}", headers=headers)
+    response = client.post(f"/api/v1/events/{new_event.id}/attend/{test_user.id}", headers=headers)
 
     # Assert
     assert response.status_code == 200
@@ -105,7 +106,7 @@ def test_event_attendees_resource(client, test_user, init_database):
     db.session.commit()
 
     # Act
-    response = client.get(f"/events/{new_event.id}/attendees", headers=headers)
+    response = client.get(f"/api/v1/events/{new_event.id}/attendees", headers=headers)
 
     # Assert
     assert response.status_code == 200

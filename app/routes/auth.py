@@ -11,7 +11,7 @@ from app.models.db import db
 from app.models import UserModel
 from app.schemas import RegisterUserSchema, LoginUserSchema
 
-blp = Blueprint("Auth", __name__, url_prefix="/auth", description="Authentication operations")
+blp = Blueprint("Auth", __name__, url_prefix="/api/v1/auth", description="Authentication operations")
 
 BLOCKLIST = set()
 

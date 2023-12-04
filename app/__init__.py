@@ -19,6 +19,9 @@ def create_app(config_class=DevelopmentConfig):
 
     config_jwt(app)
 
+    with app.app_context():
+        db.create_all()
+
     api.register_blueprint(AuthBlueprint)
     api.register_blueprint(EventBlueprint)
     api.register_blueprint(UserBlueprint)

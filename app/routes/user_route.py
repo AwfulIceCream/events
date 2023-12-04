@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models import UserModel
 from app.schemas import UserGetSchema, EventSchema
 
-blp = Blueprint("User", __name__, url_prefix="/users", description="User operations")
+blp = Blueprint("User", __name__, url_prefix="/api/v1/users", description="User operations")
 
 
 @blp.route('')

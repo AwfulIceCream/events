@@ -9,7 +9,7 @@ from app.models import EventModel
 from app.models import UserModel
 from app.schemas import EventSchema, UpdateEventSchema, UserGetSchema
 
-blp = Blueprint('Events', __name__, url_prefix='/events', description='Operations on events')
+blp = Blueprint('Events', __name__, url_prefix='/api/v1/events', description='Operations on events')
 
 
 @blp.route('')
@@ -105,9 +105,8 @@ class AttendEventResource(MethodView):
         if not user:
             abort(404, message="User not found.")
 
-        if event.creator != get_jwt_identity():
-            abort(404, message="This user has no permission on this event.")
-
+        if event.creator.id != get_jwt_identity():
+            abort(409, message="This user has no permission on this event.")
         event.attendees.append(user)
 
         db.session.add(event)
