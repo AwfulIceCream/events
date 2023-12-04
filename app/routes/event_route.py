@@ -7,15 +7,18 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.models.db import db
 from app.models import EventModel
 from app.models import UserModel
-from schemas import EventSchema, UpdateEventSchema, UserGetSchema
+from app.schemas import EventSchema, UpdateEventSchema, UserGetSchema
 
 blp = Blueprint('Events', __name__, url_prefix='/events', description='Operations on events')
 
 
-@blp.route('/')
+@blp.route('')
 class EventsList(MethodView):
     @blp.response(200, EventSchema(many=True))
     def get(self):
+        """
+        Get all events
+        """
         events = EventModel.query.all()
         return EventSchema(many=True).dump(events)
 
@@ -23,6 +26,9 @@ class EventsList(MethodView):
     @blp.arguments(EventSchema)
     @blp.response(201, EventSchema)
     def post(self, new_data):
+        """
+        Add an event
+        """
         user_id = get_jwt_identity()
         user = UserModel.query.get_or_404(user_id)
         datetime_object = datetime.strptime(new_data["date"], "%Y-%m-%dT%H:%M:%S")
@@ -40,6 +46,9 @@ class EventResource(MethodView):
     @jwt_required()
     @blp.response(200, EventSchema)
     def get(self, event_id):
+        """
+        Get event by id
+        """
         event = EventModel.query.get_or_404(event_id)
         if not event:
             abort(404, message="Event not found.")
@@ -49,6 +58,9 @@ class EventResource(MethodView):
     @blp.response(200, UpdateEventSchema)
     @jwt_required()
     def put(self, update_data, event_id):
+        """
+        Update event by id
+        """
         event = EventModel.query.get_or_404(event_id)
         if not event:
             abort(404, message="Event not found.")
@@ -64,6 +76,9 @@ class EventResource(MethodView):
     @jwt_required()
     @blp.response(204)
     def delete(self, event_id):
+        """
+        Delete event by id
+        """
         event = EventModel.query.get_or_404(event_id)
         if not event:
             abort(404, message="Event not found.")
@@ -79,6 +94,9 @@ class AttendEventResource(MethodView):
     @jwt_required()
     @blp.response(200, EventSchema)
     def post(self, event_id, user_id):
+        """
+        Attend user to event by id
+        """
         event = EventModel.query.get_or_404(event_id)
         if not event:
             abort(404, message="Event not found.")
@@ -86,6 +104,9 @@ class AttendEventResource(MethodView):
         user = UserModel.query.get_or_404(user_id)
         if not user:
             abort(404, message="User not found.")
+
+        if event.creator != get_jwt_identity():
+            abort(404, message="This user has no permission on this event.")
 
         event.attendees.append(user)
 
@@ -100,6 +121,9 @@ class EventAttendeesResource(MethodView):
     @jwt_required()
     @blp.response(200, UserGetSchema(many=True))
     def get(self, event_id):
+        """
+        Get all attendees by event id
+        """
         event = EventModel.query.get(event_id)
         if not event:
             abort(404, message="Event not found.")

@@ -9,7 +9,7 @@ from passlib.hash import pbkdf2_sha256
 
 from app.models.db import db
 from app.models import UserModel
-from schemas import RegisterUserSchema, LoginUserSchema
+from app.schemas import RegisterUserSchema, LoginUserSchema
 
 blp = Blueprint("Auth", __name__, url_prefix="/auth", description="Authentication operations")
 
@@ -20,6 +20,9 @@ BLOCKLIST = set()
 class UserRegister(MethodView):
     @blp.arguments(RegisterUserSchema)
     def post(self, user_data):
+        """
+        Register user
+        """
         if UserModel.query.filter(UserModel.email == user_data["email"]).first():
             abort(409, message="A user with that email already exists.")
 
@@ -38,6 +41,9 @@ class UserRegister(MethodView):
 class UserLogin(MethodView):
     @blp.arguments(LoginUserSchema)
     def post(self, user_data):
+        """
+        User login
+        """
         user = UserModel.query.filter(UserModel.email == user_data["email"]).first()
 
         if user and pbkdf2_sha256.verify(user_data["password"], user.password):
@@ -55,9 +61,11 @@ class UserLogin(MethodView):
 @blp.route("/logout")
 @jwt_required()
 class UserLogout(MethodView):
-    @blp.doc(security=[{"bearerAuth": []}])
     @jwt_required()
     def post(self):
+        """
+        Logout
+        """
         jti = get_jwt()["jti"]
         BLOCKLIST.add(jti)
         return {"message": "Successfully logged out"}, 200
@@ -66,6 +74,9 @@ class UserLogout(MethodView):
 @blp.route("/refresh")
 @jwt_required()
 def post(user_id, jti):
+    """
+    Get refresh token
+    """
     new_token = create_access_token(identity=user_id, fresh=False)
     BLOCKLIST.add(jti)
 

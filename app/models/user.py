@@ -13,8 +13,6 @@ class UserModel(db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password = db.Column(db.String())
 
-    # Correctly define the many-to-many relationship
-
     attending = db.relationship('EventModel', secondary=attendees, back_populates='attendees')
 
     created_events = db.relationship('EventModel', back_populates='creator', lazy='dynamic')

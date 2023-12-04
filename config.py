@@ -1,6 +1,3 @@
-import os
-
-
 class Config:
     API_TITLE = "Events REST API"
     API_VERSION = "v1"
@@ -21,6 +18,3 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    JWT_SECRET_KEY = "andrii"
-    SECRET_KEY = "9c9c2ff463c47cea625cf6652b9b2043"
-    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
