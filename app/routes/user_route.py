@@ -83,4 +83,4 @@ class UserEventsResource(MethodView):
         db.session.delete(user)
         db.session.commit()
 
-        return 204
+        return {"message": "User deleted"}, 204
