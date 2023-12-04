@@ -1,7 +1,10 @@
+from datetime import datetime
+
 import pytest
 from passlib.handlers.pbkdf2 import pbkdf2_sha256
 
 from app import create_app, db
+from app.models import EventModel
 from app.models.user import UserModel
 from config import TestingConfig
 
@@ -31,3 +34,15 @@ def test_user(init_database):
     db.session.add(user)
     db.session.commit()
     return user
+
+@pytest.fixture(scope='module')
+def test_event(init_database, test_user):
+    event = EventModel(
+        title="Event Title",
+        description="Event Description",
+        date=datetime.strptime("2023-12-01T13:25:38", "%Y-%m-%dT%H:%M:%S"),
+        creator=test_user
+    )
+    db.session.add(event)
+    db.session.commit()
+    return event
